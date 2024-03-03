@@ -1,0 +1,35 @@
+{{ define "main" }}
+    <div class="grid">
+    {{/* https://coolors.co/030826-5750e2-bd0fa3-f56a61-600aeb */}}
+    {{ $colors1 := slice "#5750E2" "#BD0FA3" "#F56A61" "#F56A61" "#600AEB" }}
+    {{ range (shuffle (resources.Match "mod-icons/fa/svg/solid/*.svg")) }}
+        {{ $name := printf "%s %s" "fas" (replace (.Name | path.Base) (.Name | path.Ext) "") }}
+        {{ $color := index (shuffle $colors1) 0 }}
+
+        {{ with (partial "icon" (dict "context" $ "name" $name "loader" "svg-use-advanced")) }}
+        <div class="icon-col" style="fill: {{ $color }}">
+            {{ .icon }}
+            <span class="tooltip"><code>{{ $name }}</code></span>
+            <div class="search" style="opacity: 0">{{ .label }}</div>
+        </div>
+        {{ end }}
+    {{ end }}
+    </div>
+    <div class="grid">
+    {{ $colors2 := slice "#a0a0a0a0" "#00a7e1ff" "#00171fff" "#003459ff" "#007ea7ff" }}
+    {{ range resources.Match "mod-icons/fa/svg/brands/*.svg" }}
+        {{ $name := printf "%s %s" "fab" (replace (.Name | path.Base) (.Name | path.Ext) "") }}
+        {{ $color := index (shuffle $colors2) 0 }}
+
+        {{ with (partial "icon" (dict "context" $ "name" $name "loader" "svg-use-advanced")) }}
+        <div class="icon-col" style="fill: {{ $color }}">
+            {{ .icon }}
+            <span class="tooltip"><code>{{ $name }}</code></span>
+            <div class="search" style="opacity: 0">{{ .label }}</div>
+        </div>
+        {{ end }}
+    {{ end }}
+    </div>
+    {{ partial "icon-data" . }}
+</body>
+{{ end }}
